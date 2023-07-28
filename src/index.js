@@ -1,11 +1,12 @@
 import express from "express";
 import { connect } from "./config/database.js";
-import Hashtag from "./models/hashtag.js";
-import Tweet from "./models/tweet.js";
+import router from "./routes/index.js";
 import TweetRepository from "./repository/tweet-repository.js";
 
 const app = express();
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/", router);
 app.listen(3000, async () => {
   console.log("Server started at 3000");
   // MongoDB connection establishment
@@ -23,12 +24,4 @@ app.listen(3000, async () => {
   //   text: "travels",
   //   tweets: "648c2a18e6cd38c3b56892d0",
   // });
-
-  const tweetRepo = new TweetRepository();
-
-  let tweets = await tweetRepo.deleteTweet({
-    _id: "648c2a18e6cd38c3b56892d0",
-  });
-
-  console.log(tweets);
 });

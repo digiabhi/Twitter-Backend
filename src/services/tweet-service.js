@@ -40,3 +40,5 @@ class TweetService {
     return tweet;
   }
 }
+
+export default TweetService;
