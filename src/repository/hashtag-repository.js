@@ -16,7 +16,7 @@ class HashtagRepository extends CrudRepository {
     }
   }
 
-  async getHashtagByName(text) {
+  async findByName(text) {
     try {
       let hashtag = await Hashtag.find({ text: text });
       return hashtag;

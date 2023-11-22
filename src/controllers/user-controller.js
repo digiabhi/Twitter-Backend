@@ -1,15 +1,15 @@
-import TweetService from "../services/tweet-service.js";
+import UserService from "../services/user-service.js";
 
-const tweetService = new TweetService();
+const userService = new UserService();
 
-export const createTweet = async (req, res) => {
+export const signUp = async (req, res) => {
   try {
     const data = req.body;
-    const response = await tweetService.create(data);
+    const response = await userService.signUp(data);
 
     return res.status(201).json({
       success: true,
-      message: "Successfully created a tweet",
+      message: "Successfully created a user",
       data: response,
       err: {},
     });
@@ -23,21 +23,21 @@ export const createTweet = async (req, res) => {
   }
 };
 
-export const getTweet = async (req, res) => {
+export const signIn = async (req, res) => {
   try {
-    const id = req.params.id;
-    const response = await tweetService.getTweet(id);
+    const data = req.body;
+    const response = await userService.signIn(data);
 
     return res.status(200).json({
       success: true,
-      message: "Successfully fetched a tweet",
+      message: "Successfully signed in a user",
       data: response,
       err: {},
     });
   } catch (error) {
     return res.status(500).json({
       success: true,
-      message: "Error Encountered",
+      message: "Error Encountered signin a user",
       data: {},
       err: error,
     });
