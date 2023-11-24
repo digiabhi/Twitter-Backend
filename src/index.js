@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 passportAuth(passport);
 app.use("/api", router);
-app.listen(3000, async () => {
-  console.log("Server started at 3000");
+app.listen(8080, async () => {
+  console.log("Server started at 8080");
   // MongoDB connection establishment
   connect();
   console.log("MongoDB connected");

@@ -10,7 +10,6 @@ export const toggleLike = async (req, res) => {
       data.modelType,
       data.user
     );
-
     return res.status(201).json({
       success: true,
       message: "Successfully created a like",

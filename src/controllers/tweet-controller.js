@@ -1,4 +1,5 @@
 import TweetService from "../services/tweet-service.js";
+import upload from "../config/file-upload-s3.js";
 
 const tweetService = new TweetService();
 
