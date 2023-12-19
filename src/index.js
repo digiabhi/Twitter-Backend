@@ -1,30 +1,24 @@
 import express from "express";
-import { connect } from "./config/database.js";
-import router from "./routes/index.js";
+import bodyParser from "body-parser";
 import passport from "passport";
-import { passportAuth } from "./middlewares/jwt-middleware.js";
+
+import { connect } from "./config/database.js";
+
+import { passportAuth } from "./config/jwt-middleware.js";
+
+import apiRoutes from "./routes/index.js";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(passport.initialize());
 passportAuth(passport);
-app.use("/api", router);
-app.listen(8080, async () => {
-  console.log("Server started at 8080");
-  // MongoDB connection establishment
-  connect();
-  console.log("MongoDB connected");
 
-  // Tweet.create({
-  //   content: "This is my first tweet",
-  //   likes: 25,
-  //   noOfRetweets: 5,
-  //   comment: "This is my first comment",
-  // });
+app.use("/api", apiRoutes);
 
-  // Hashtag.create({
-  //   text: "travels",
-  //   tweets: "648c2a18e6cd38c3b56892d0",
-  // });
+app.listen(3000, async () => {
+  console.log("server started");
+  await connect();
+  console.log("Mongo db connected");
 });

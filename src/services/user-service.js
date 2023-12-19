@@ -5,7 +5,7 @@ class UserService {
     this.userRepository = new UserRepository();
   }
 
-  async signUp(data) {
+  async signup(data) {
     try {
       const user = await this.userRepository.create(data);
       return user;
@@ -14,22 +14,28 @@ class UserService {
     }
   }
 
-  async signIn(data) {
+  async getUserByEmail(email) {
     try {
-      const email = data.email;
-      const currentPassword = data.password;
-      const user = await this.userRepository.findBy({ email: email });
+      const user = await this.userRepository.findBy({ email });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async signin(data) {
+    try {
+      const user = await this.getUserByEmail(data.email);
       if (!user) {
         throw {
-          message: "No user found!",
+          message: "no user found",
         };
       }
-      if (!user.comparePassword(currentPassword)) {
+      if (!user.comparePassword(data.password)) {
         throw {
-          message: "Incorrect Password",
+          message: "incorrect password",
         };
       }
-      console.log("User successfully signed in");
       const token = user.genJWT();
       return token;
     } catch (error) {

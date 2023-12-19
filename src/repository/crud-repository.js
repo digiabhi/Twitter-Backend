@@ -1,3 +1,4 @@
+import Tweet from "../models/tweet.js";
 class CrudRepository {
   constructor(model) {
     this.model = model;
@@ -5,52 +6,53 @@ class CrudRepository {
 
   async create(data) {
     try {
-      const response = await this.model.create(data);
-      return response;
+      console.log(data);
+      const result = await this.model.create(data);
+      return result;
     } catch (error) {
-      Logger.error("Something went wrong in Crud Repo : create");
+      console.log("Something went wrong in crud repo");
       throw error;
     }
   }
 
   async destroy(id) {
     try {
-      const response = await this.model.findByIdAndDelete(id);
-      return response;
+      const result = await this.model.findByIdAndDelete(id);
+      return result;
     } catch (error) {
-      Logger.error("Something went wrong in Crud Repo : destroy");
+      console.log("Something went wrong in crud repo");
       throw error;
     }
   }
 
   async get(id) {
     try {
-      const response = await this.model.findById(id);
-      return response;
+      const result = await this.model.findById(id);
+      return result;
     } catch (error) {
-      Logger.error("Something went wrong in Crud Repo : get");
+      console.log("Something went wrong in crud repo");
       throw error;
     }
   }
 
   async getAll() {
     try {
-      const response = await this.model.find({});
-      return response;
+      const result = await this.model.find({});
+      return result;
     } catch (error) {
-      Logger.error("Something went wrong in Crud Repo : getAll");
+      console.log("Something went wrong in crud repo");
       throw error;
     }
   }
 
   async update(id, data) {
     try {
-      const response = await this.model.findByIdAndUpdate(id, data, {
+      const result = await this.model.findByIdAndUpdate(id, data, {
         new: true,
       });
-      return response;
+      return result;
     } catch (error) {
-      Logger.error("Something went wrong in Crud Repo : update");
+      console.log("Something went wrong in crud repo");
       throw error;
     }
   }

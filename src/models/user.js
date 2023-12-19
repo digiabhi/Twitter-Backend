@@ -1,50 +1,42 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-  },
-  bio: {
-    type: String,
-  },
-  tweets: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
+
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  name: {
-    type: String,
+    password: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
   },
-});
+  { timestamps: true }
+);
 
 userSchema.pre("save", function (next) {
   const user = this;
-  const salt = bcrypt.genSaltSync(9);
-  const encryptedPassword = bcrypt.hashSync(user.password, salt);
+  const SALT = bcrypt.genSaltSync(9);
+  const encryptedPassword = bcrypt.hashSync(user.password, SALT);
   user.password = encryptedPassword;
   next();
 });
 
 userSchema.methods.comparePassword = function compare(password) {
-  const user = this;
-  return bcrypt.compareSync(password, user.password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 userSchema.methods.genJWT = function generate() {
-  return jwt.sign(
-    {
-      id: this._id,
-      email: this.email,
-    },
-    "twitter_secret",
-    { expiresIn: "2h" }
-  );
+  return jwt.sign({ id: this._id, email: this.email }, "twitter_secret", {
+    expiresIn: "1h",
+  });
 };
 
 const User = mongoose.model("User", userSchema);

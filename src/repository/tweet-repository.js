@@ -5,43 +5,48 @@ class TweetRepository extends CrudRepository {
   constructor() {
     super(Tweet);
   }
+
   async create(data) {
     try {
-      let tweet = await Tweet.create(data);
+      const tweet = await Tweet.create(data);
+      return tweet;
+    } catch (error) {
+      // console.log(error);
+      throw error;
+    }
+  }
+
+  async getWithComments(id) {
+    try {
+      const tweet = await Tweet.findById(id)
+        .populate({
+          path: "comments",
+          populate: {
+            path: "comments",
+          },
+        })
+        .lean();
       return tweet;
     } catch (error) {
       console.log(error);
-      throw error;
     }
   }
 
-  async getAllTweets() {
+  async getAll(offset, limit) {
     try {
-      let tweets = await Tweet.find({});
-      return tweets;
+      const tweet = await Tweet.find().skip(offset).limit(limit);
+      return tweet;
     } catch (error) {
       console.log(error);
-      throw error;
     }
   }
 
-  async getTweet(id) {
+  async find(id) {
     try {
-      let tweets = await Tweet.findById(id);
-      return tweets;
+      const tweet = await Tweet.findById(id).populate({ path: "likes" });
+      return tweet;
     } catch (error) {
       console.log(error);
-      throw error;
-    }
-  }
-
-  async deleteTweet(data) {
-    try {
-      let tweets = await Tweet.deleteOne(data);
-      return tweets;
-    } catch (error) {
-      console.log(error);
-      throw error;
     }
   }
 }
